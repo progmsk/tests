@@ -48,5 +48,16 @@ public class PowerTest {
         });
     }
 
+    @Test
+    public void when4WithExp8Then65536AndInputsNotChanged() {
+        int base = 4;
+        Exponent exp = new Exponent(8);
+
+        BigInteger result = Power.calculate(base, exp);
+
+        assertEquals(BigInteger.valueOf(65536), result);
+        assertEquals(4, base);
+        assertEquals(8, exp.getValue());
+    }
 
 }
