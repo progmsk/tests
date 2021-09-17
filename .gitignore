@@ -286,5 +286,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-Binateq.JsonRestClient/JsonRestClientGenerated.cs
-json-rest-client.sln.DotSettings
+
+/shelf/
+/workspace.xml
