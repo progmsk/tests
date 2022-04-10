@@ -1,8 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fib", "Fib\Fib.fsproj", "{74D17C80-637F-4C07-96DF-E70DDED945F4}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fib.Tests", "Fib.Tests\Fib.Tests.fsproj", "{C74071F9-4A73-491D-A4A6-9CACE464A1AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74D17C80-637F-4C07-96DF-E70DDED945F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74D17C80-637F-4C07-96DF-E70DDED945F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74D17C80-637F-4C07-96DF-E70DDED945F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74D17C80-637F-4C07-96DF-E70DDED945F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74071F9-4A73-491D-A4A6-9CACE464A1AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74071F9-4A73-491D-A4A6-9CACE464A1AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74071F9-4A73-491D-A4A6-9CACE464A1AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74071F9-4A73-491D-A4A6-9CACE464A1AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
