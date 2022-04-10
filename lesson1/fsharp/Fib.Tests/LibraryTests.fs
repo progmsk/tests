@@ -36,13 +36,13 @@ let ``next_q - parameterised test`` p q expected =
 [<Fact>]
 let ``step - with odd n - decreases n`` () =
     let prev_n = 5
-    let (_, _, _, _, n) = step (0I, 1I, 2I, 3I, prev_n)
+    let _, _, _, _, n = step (0I, 1I, 2I, 3I, prev_n)
     Assert.Equal(prev_n - 1, n)
     
 [<Fact>]
 let ``step - with even n - divides n by 2`` () =
     let prev_n = 6
-    let (_, _, _, _, n) = step (1I, 0I, 2I, 3I, prev_n)
+    let _, _, _, _, n = step (1I, 0I, 2I, 3I, prev_n)
     
     Assert.Equal(prev_n / 2, n)
     
@@ -51,7 +51,7 @@ let ``step - with odd n - changes a and b`` () =
     let n = 5
     let prev_a = 0I
     let prev_b = 1I
-    let (a, b, _, _, _) = step (prev_a, prev_b, 2I, 3I, n)
+    let a, b, _, _, _ = step (prev_a, prev_b, 2I, 3I, n)
     
     Assert.NotEqual(prev_a, a)
     Assert.NotEqual(prev_b, b)
@@ -61,7 +61,7 @@ let ``step - with odd n - keeps p and q`` () =
     let n = 5
     let prev_p = 2I
     let prev_q = 3I
-    let (_, _, p, q, _) = step (0I, 1I, prev_p, prev_q, n)
+    let _, _, p, q, _ = step (0I, 1I, prev_p, prev_q, n)
     
     Assert.Equal(prev_p, p)
     Assert.Equal(prev_q, q)
@@ -71,7 +71,7 @@ let ``step - with even n - keeps a and b`` () =
     let n = 6
     let prev_a = 0I
     let prev_b = 1I
-    let (a, b, _, _, _) = step (prev_a, prev_b, 2I, 3I, n)
+    let a, b, _, _, _ = step (prev_a, prev_b, 2I, 3I, n)
     
     Assert.Equal(prev_a, a)
     Assert.Equal(prev_b, b)
@@ -81,7 +81,7 @@ let ``step - with even n - changes p and q`` () =
     let n = 6
     let prev_p = 2I
     let prev_q = 3I
-    let (_, _, p, q, _) = step (0I, 1I, prev_p, prev_q, n)
+    let _, _, p, q, _ = step (0I, 1I, prev_p, prev_q, n)
     
     Assert.NotEqual(prev_p, p)
     Assert.NotEqual(prev_q, q)
