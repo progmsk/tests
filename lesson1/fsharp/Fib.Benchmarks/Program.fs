@@ -4,14 +4,27 @@ open Library
 
 
 type BenchmarksTests() =
-    [<Params(0, 1, 6, 40)>]
-    member val n = 0 with get, set
-    
     [<Benchmark>]
-    member this.exponential () = fib_slow this.n |> ignore
+    [<Arguments(0)>]
+    [<Arguments(1)>]
+    [<Arguments(6)>]
+    [<Arguments(40)>]
+    member this.exponential n = fib_slow n |> ignore
 
     [<Benchmark>]
-    member this.linear () = fib this.n |> ignore
+    [<Arguments(0)>]
+    [<Arguments(1)>]
+    [<Arguments(6)>]
+    [<Arguments(40)>]
+    [<Arguments(100)>]
+    [<Arguments(1000)>]
+    member this.linear n = fib n |> ignore
+    
+    [<Benchmark>]
+    [<Arguments(40)>]
+    [<Arguments(100)>]
+    [<Arguments(1000)>]
+    member this.logarithm n = fib_fast n |> ignore
     
 
 BenchmarkRunner.Run<BenchmarksTests> () |> ignore
