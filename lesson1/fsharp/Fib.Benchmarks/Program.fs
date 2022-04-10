@@ -24,7 +24,7 @@ type BenchmarksTests() =
     [<Arguments(40)>]
     [<Arguments(100)>]
     [<Arguments(1000)>]
-    member this.logarithm n = fib_fast n |> ignore
+    member this.logarithmic n = fib_fast n |> ignore
     
 
 BenchmarkRunner.Run<BenchmarksTests> () |> ignore
