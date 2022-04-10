@@ -2,14 +2,25 @@
 
 open System
 
+let internal next_a a b p q = b * q + a * q + a * p
+
+let internal next_b a b p q = b * p + a * q
+
+let internal next_p p q = p * p + q * q
+
+let internal next_q p q = 2I * p * q + q * q
+
+let internal step (a, b, p, q, n) =
+    if n % 2 = 0 then (a, b, next_p p q, next_q p q, n / 2)
+    else (next_a a b p q, next_b a b p q, p, q, n - 1)
+
 let fib_fast n =
-    let rec iterate a b p q n =
+    let rec iterate (a, b, p, q, n) =
         if n = 0 then a
-        else if n % 2 = 0 then iterate a b (p * p + q * q) (2I * p * q + q * q) (n / 2)
-        else iterate (b * q + a * q + a * p) (b * p + a * q) p q (n - 1)
+        else (a, b, p, q, n) |> step |> iterate
         
     if n < 0 then raise (ArgumentOutOfRangeException(nameof n))
-    iterate 0I 1I 0I 1I n
+    iterate (0I, 1I, 0I, 1I, n)
 
 let fib n =
     let rec iterate a b n =
