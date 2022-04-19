@@ -1,46 +1,37 @@
 pub fn quicksort(slice: &mut [i32]) {
     if slice.len() < 2 {
-        return;
+        return
     }
 
     let pivot = slice[0];
-    let index = partition(slice, pivot);
+    let split_index = partition(slice, pivot);
 
-    let (left, right) = slice.split_at_mut(index + 1);
+    let (left, right) = slice.split_at_mut(split_index);
 
     quicksort(left);
     quicksort(right);
 }
 
 #[test]
-fn quicksort_132_makes_123() {
-    let mut array = vec![1, 3, 2];
+fn quicksort_343_sets_334() {
+    let mut array = vec![3, 4, 3];
 
     quicksort(&mut array);
 
-    assert_eq!(vec![1, 2, 3], array);
+    assert_eq!(vec![3, 3, 4], array);
 }
 
 #[test]
-fn quicksort_revert_unordered_array_with_2_item() {
-    let mut array = vec![2, 1];
+fn quicksort_for_empty_array_does_nothing() {
+    let mut array = vec![];
 
     quicksort(&mut array);
 
-    assert_eq!(vec![1, 2], array);
+    assert_eq!(Vec::<i32>::new(), array);
 }
 
 #[test]
-fn quicksort_keeps_ordered_array_with_2_item() {
-    let mut array = vec![1, 2];
-
-    quicksort(&mut array);
-
-    assert_eq!(vec![1, 2], array);
-}
-
-#[test]
-fn quicksort_keeps_array_with_1_item() {
+fn quicksort_for_1_element_array_does_nothing() {
     let mut array = vec![1];
 
     quicksort(&mut array);
@@ -48,154 +39,147 @@ fn quicksort_keeps_array_with_1_item() {
     assert_eq!(vec![1], array);
 }
 
-#[test]
-fn quicksort_keeps_empty_array() {
-    let mut array = Vec::<i32>::new();
-
-    quicksort(&mut array);
-
-    assert_eq!(Vec::<i32>::new(), array);
-}
-
 fn partition(slice: &mut [i32], pivot: i32) -> usize {
     let mut left = 0;
     let mut right = slice.len() - 1;
 
-    while try_step_partition(slice, &mut left, &mut right, pivot) { }
+    while try_swap(slice, &mut left, &mut right, pivot) { }
 
-    left
+    right + 1
 }
 
 #[test]
-fn partitioning_with_4563012_makes_2103654() {
-    let pivot = 3;
-    let mut array = vec![4, 5, 6, pivot, 0, 1, 2];
+fn partition_12_returns_1() {
+    let mut array = vec![1, 2];
+    let pivot = 1;
 
-    partition(&mut array, pivot);
+    let split_index = partition(&mut array, pivot);
 
-    assert_eq!(vec![2, 1, 0, pivot, 6, 5, 4], array);
+    assert_eq!(vec![1, 2], array);
+    assert_eq!(1, split_index);
 }
 
 #[test]
-fn partitioning_with_4563012_stops_on_pivot3() {
-    let pivot = 3;
-    let mut array = vec![4, 5, 6, pivot, 0, 1, 2];
+fn partition_21_returns_1() {
+    let mut array = vec![2, 1];
+    let pivot = 1;
 
-    let index = partition(&mut array, pivot);
+    let split_index = partition(&mut array, pivot);
 
-    assert_eq!(3, index);
+    assert_eq!(vec![1, 2], array);
+    assert_eq!(1, split_index);
 }
 
 #[test]
-fn partitioning_with_ordered_data_does_nothing() {
-    let pivot = 4;
-    let mut array = vec![0, 1, 2, 3, pivot, 5, 6, 7];
+fn partition_22_returns_1() {
+    let mut array = vec![2, 2];
+    let pivot = 2;
 
-    partition(&mut array, pivot);
+    let split_index = partition(&mut array, pivot);
 
-    assert_eq!(vec![0, 1, 2, 3, pivot, 5, 6, 7], array);
+    assert_eq!(vec![2, 2], array);
+    assert_eq!(1, split_index);
 }
 
-#[test]
-fn partitioning_with_ordered_data_stops_on_pivot() {
-    let pivot = 4;
-    let mut array = vec![0, 1, 2, 3, pivot, 5, 6, 7];
-
-    let index = partition(&mut array, pivot);
-
-    assert_eq!(4, index);
-}
-
-fn try_step_partition(slice: &mut [i32], left: &mut usize, right: &mut usize, pivot: i32) -> bool {
+fn try_swap(slice: &mut [i32], left: &mut usize, right: &mut usize, pivot: i32) -> bool {
     *left = find_next_left(slice, *left, pivot);
     *right = find_next_right(slice, *right, pivot);
 
-    if !try_swap_items(slice, *left, *right) {
-        return false;
+    if left >= right {
+        return false
     }
 
+    slice.swap(*left, *right);
     *left += 1;
     *right -= 1;
 
-    *left < *right
+    true
 }
 
 #[test]
-fn trying_step_partition_keeps_items_if_left_less_than_right() {
-    let pivot = 2;
-    let mut array = vec![0, 1, pivot, 3, 4];
-    let mut left = 1;
-    let mut right = 3;
-
-    assert!(!try_step_partition(&mut array, &mut left, &mut right, pivot));
-
-    assert_eq!(vec![0, 1, pivot, 3, 4], array);
-    assert_eq!(2, left);
-    assert_eq!(2, right);
-}
-
-#[test]
-fn trying_step_partition_swaps_items_if_left_great_than_right() {
-    let pivot = 2;
-    let mut array = vec![4, 1, pivot, 3, 0];
+fn trying_swap_343_step_1() {
+    let mut array = vec![3, 4, 3];
     let mut left = 0;
-    let mut right = 4;
+    let mut right = 2;
+    let pivot = 3;
 
-    assert!(try_step_partition(&mut array, &mut left, &mut right, pivot));
+    let do_continue = try_swap(&mut array, &mut left, &mut right, pivot);
 
-    assert_eq!(vec![0, 1, pivot, 3, 4], array);
+    assert_eq!(vec![3, 4, 3], array);
     assert_eq!(1, left);
-    assert_eq!(3, right);
-}
-
-fn try_swap_items(slice: &mut [i32], left: usize, right: usize) -> bool {
-    if left < right {
-        slice.swap(left, right);
-
-        return true;
-    }
-
-    false
+    assert_eq!(1, right);
+    assert_eq!(true, do_continue);
 }
 
 #[test]
-fn trying_swap_returns_false_if_left_equals_to_right() {
-    let mut array = vec![0, 1, 2, 3, 4, 5];
-    let left = 3;
-    let right = 3;
+fn trying_swap_343_step_2() {
+    let mut array = vec![3, 4, 3];
+    let mut left = 1;
+    let mut right = 1;
+    let pivot = 3;
 
-    assert!(!try_swap_items(&mut array, left, right));
+    let do_continue = try_swap(&mut array, &mut left, &mut right, pivot);
+
+    assert_eq!(vec![3, 4, 3], array);
+    assert_eq!(1, left);
+    assert_eq!(0, right);
+    assert_eq!(false, do_continue);
 }
 
 #[test]
-fn trying_swap_returns_true_if_left_less_than_right() {
-    let mut array = vec![0, 1, 4, 3, 2, 5];
-    let left = 2;
-    let right = 4;
+fn trying_swap_21_swaps_and_sets_left_to_1_right_to_0() {
+    let mut array = vec![2, 1];
+    let mut left = 0;
+    let mut right = 1;
 
-    assert!(try_swap_items(&mut array, left, right));
+    let do_continue = try_swap(&mut array, &mut left, &mut right, 1);
+
+    assert_eq!(vec![1, 2], array);
+    assert_eq!(1, left);
+    assert_eq!(0, right);
+    assert_eq!(true, do_continue);
 }
 
 #[test]
-fn trying_swap_swaps_items_if_left_less_than_right() {
-    let mut array = vec![0, 1, 4, 3, 2, 5];
-    let left = 2;
-    let right = 4;
+fn trying_swap_22_swaps_and_sets_left_to_1_right_to_0() {
+    let mut array = vec![2, 2];
+    let mut left = 0;
+    let mut right = 1;
 
-    try_swap_items(&mut array, left, right);
+    let do_continue = try_swap(&mut array, &mut left, &mut right, 2);
 
-    assert_eq!(2, array[2]);
-    assert_eq!(4, array[4]);
+    assert_eq!(vec![2, 2], array);
+    assert_eq!(1, left);
+    assert_eq!(0, right);
+    assert_eq!(true, do_continue);
 }
 
-fn find_next_right(slice: &[i32], right: usize, pivot: i32) -> usize {
-    let mut i = right;
+#[test]
+fn trying_swap_12_after_previous_test_does_nothing() {
+    let mut array = vec![1, 2];
+    let mut left = 1;
+    let mut right = 0;
 
-    while slice[i] > pivot {
-        i -= 1
-    }
+    let do_continue = try_swap(&mut array, &mut left, &mut right, 2);
 
-    i
+    assert_eq!(vec![1, 2], array);
+    assert_eq!(1, left);
+    assert_eq!(0, right);
+    assert_eq!(false, do_continue);
+}
+
+#[test]
+fn trying_swap_12_sets_left_and_right_to_0() {
+    let mut array = vec![1, 2];
+    let mut left = 0;
+    let mut right = 1;
+
+    let do_continue = try_swap(&mut array, &mut left, &mut right, 1);
+
+    assert_eq!(vec![1, 2], array);
+    assert_eq!(0, left);
+    assert_eq!(0, right);
+    assert_eq!(false, do_continue);
 }
 
 fn find_next_left(slice: &[i32], left: usize, pivot: i32) -> usize {
@@ -208,22 +192,21 @@ fn find_next_left(slice: &[i32], left: usize, pivot: i32) -> usize {
     i
 }
 
-#[test]
-fn finding_next_left_index_stop_on_pivot() {
-    let pivot = 3;
-    let array = vec![0, 1, 2, pivot, 4, 5];
-    let mut left = 3;
+fn find_next_right(slice: &[i32], right: usize, pivot: i32) -> usize {
+    let mut i = right;
 
-    left = find_next_left(&array, left, pivot);
+    while slice[i] > pivot {
+        i -= 1
+    }
 
-    assert_eq!(3, left);
+    i
 }
 
 #[test]
-fn finding_next_left_index_stop_on_item_greater_that_pivot() {
+fn finding_next_left_result_points_to_greater_than_pivot() {
     let pivot = 3;
     let array = vec![0, 1, 4, pivot, 2, 5];
-    let mut left = 2;
+    let mut left = 0;
 
     left = find_next_left(&array, left, pivot);
 
@@ -231,10 +214,10 @@ fn finding_next_left_index_stop_on_item_greater_that_pivot() {
 }
 
 #[test]
-fn finding_next_left_index_skip_items_less_that_pivot() {
+fn finding_next_left_result_points_to_pivot() {
     let pivot = 3;
     let array = vec![0, 1, 2, pivot, 4, 5];
-    let mut left = 1;
+    let mut left = 0;
 
     left = find_next_left(&array, left, pivot);
 
