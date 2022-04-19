@@ -13,6 +13,21 @@ pub fn quicksort(slice: &mut [i32]) {
 }
 
 #[test]
+fn quicksort_sorts_permutations() {
+    let expected = vec![1, 2, 3, 3, 4, 5, 5];
+
+    use itertools::Itertools;
+
+    for permutation in expected.iter().permutations(expected.len()).unique() {
+        let mut actual: Vec<i32> = permutation.iter().map(|i| **i).collect();
+
+        quicksort(&mut actual);
+
+        assert_eq!(expected, actual);
+    }
+}
+
+#[test]
 fn quicksort_343_sets_334() {
     let mut array = vec![3, 4, 3];
 
